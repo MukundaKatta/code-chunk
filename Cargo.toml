@@ -1,0 +1,15 @@
+[package]
+name = "code-chunk"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+description = "Split source code into RAG-friendly chunks that respect function and class boundaries. Brace and indent-aware, language-agnostic heuristics. Zero deps."
+authors = ["Mukunda Rao Katta <mukunda.vjcs6@gmail.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/MukundaKatta/code-chunk"
+homepage = "https://github.com/MukundaKatta/code-chunk"
+documentation = "https://docs.rs/code-chunk"
+readme = "README.md"
+keywords = ["chunk", "code", "rag", "split", "ast"]
+categories = ["text-processing", "parsing"]
+exclude = [".github/*", "target/*"]
