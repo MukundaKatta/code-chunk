@@ -44,11 +44,19 @@ pub fn chunk(src: &str, max_chars: usize) -> Vec<String> {
         if buf.len() + block.len() <= max_chars {
             buf.push_str(&block);
         } else {
+            // Block doesn't fit alongside what's already buffered: flush
+            // the buffer first so the new block starts fresh.
             if !buf.is_empty() {
                 out.push(std::mem::take(&mut buf));
             }
-            // Block alone is bigger than the cap → emit whole.
-            out.push(block);
+            if block.len() > max_chars {
+                // Block alone is bigger than the cap → emit whole.
+                out.push(block);
+            } else {
+                // Block fits on its own; keep accumulating so later
+                // small blocks can pack in with it.
+                buf.push_str(&block);
+            }
         }
     }
     if !buf.is_empty() {
@@ -70,11 +78,7 @@ fn split_top_level_blocks(src: &str) -> Vec<String> {
         for c in trimmed.chars() {
             match c {
                 '{' => depth += 1,
-                '}' => {
-                    if depth > 0 {
-                        depth -= 1;
-                    }
-                }
+                '}' if depth > 0 => depth -= 1,
                 _ => {}
             }
         }
